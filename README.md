@@ -1,66 +1,189 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <h1 align="center">💰 KASLO</h1>
+  <p align="center">
+    <strong>Personal & Shared Family Expense Tracker</strong><br>
+    Aplikasi pelacak keuangan dan pengeluaran modern berbasis Laravel 12 & Filament v3 dengan dukungan multi-user (ruang keuangan bersama suami-istri).
+  </p>
 </p>
 
-## About Laravel
+<p align="center">
+  <img src="https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel 12">
+  <img src="https://img.shields.io/badge/Filament-3.x-F59E0B?style=for-the-badge&logo=filament&logoColor=white" alt="Filament v3">
+  <img src="https://img.shields.io/badge/PHP-%3E%3D8.2-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP 8.2+">
+  <img src="https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License MIT">
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📖 Tentang Kaslo
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Kaslo** (*Kas Flow*) adalah aplikasi pelacak keuangan dan anggaran yang dirancang untuk memudahkan pencatatan arus kas pribadi, keluarga, maupun usaha kecil. 
 
-## Learning Laravel
+Dengan antarmuka yang bersih, cepat, dan mobile-responsive menggunakan **Filament v3**, Kaslo memungkinkan suami dan istri login menggunakan akun masing-masing namun terhubung ke ruang keuangan bersama yang sama secara real-time.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## ✨ Fitur Utama
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- 👨‍👩‍👧 **Multi-User & Ruang Keuangan Bersama (Tenancy)**
+  - Suami dan istri memiliki akun login terpisah namun mengelola dompet dan anggaran yang sama secara transparan.
+  - Setiap transaksi mencatat siapa yang melakukan input (misal: *Budi Santoso* atau *Siti Rahma*).
+  - Menu **Anggota Keluarga** untuk mengundang pasangan hanya dengan memasukkan alamat email.
 
-## Laravel Sponsors
+- 💳 **Manajemen Dompet & Rekening (Multi-Wallet)**
+  - Mendukung jenis akun: **Uang Tunai (Cash)**, **Rekening Bank** (BCA, Mandiri, BRI, dll.), **E-Wallet** (GoPay, OVO, Dana, ShopeePay), dan **Investasi**.
+  - Pilihan warna indikator untuk identifikasi visual cepat.
+  - **Sinkronisasi Saldo Otomatis**: Saldo dompet otomatis bertambah saat pemasukan, berkurang saat pengeluaran, dan berpindah saat transfer antar dompet via `TransactionObserver`.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- 📝 **Pencatatan Transaksi Cerdas**
+  - Jenis transaksi: 🔴 **Pengeluaran**, 🟢 **Pemasukan**, dan 🔄 **Transfer Saldo Antar Dompet**.
+  - **Format Rupiah Otomatis**: Input nominal dilengkapi pemisah titik ribuan secara real-time (`900.000`).
+  - Upload foto struk / bukti transaksi belanja.
+  - Filter tabel fleksibel: tanggal, dompet, kategori, jenis transaksi, dan pencatat.
 
-### Premium Partners
+- 🎯 **Target Anggaran Bulanan (Budgeting)**
+  - Penetapan limit anggaran bulanan per kategori pengeluaran (format periode `YYYY-MM`).
+  - Realisasi terpakai dihitung otomatis secara real-time.
+  - Indikator status cerdas: **Aman (<80%)**, **Waspada (80-100%)**, dan **Over Budget (>100%)**.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+- 📊 **Dashboard Finansial & Visualisasi Interaktif**
+  - Kartu statistik: Total Saldo Bersama, Pemasukan Bulan Ini, Pengeluaran Bulan Ini, dan Arus Kas Bersih (*Net Cash Flow*).
+  - *Doughnut Chart*: Alokasi pengeluaran per kategori pada bulan berjalan.
+  - *Bar Chart*: Tren perbandingan pemasukan vs pengeluaran 6 bulan terakhir.
+  - Widget 5 transaksi terkini.
 
-## Contributing
+- 📱 **Mobile Responsive**
+  - Tata letak responsif untuk smartphone dan tablet dengan menu sidebar yang dapat dibuka-tutup dengan mulus.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 🛠️ Teknologi yang Digunakan (Tech Stack)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Komponen | Teknologi |
+|---|---|
+| **Framework Backend** | [Laravel 12](https://laravel.com/) |
+| **Admin & UI Panel** | [Filament v3](https://filamentphp.com/) (TALL Stack) |
+| **Frontend Framework** | [Livewire 3](https://livewire.laravel.com/) & [Alpine.js](https://alpinejs.dev/) |
+| **Styling & CSS** | [Tailwind CSS](https://tailwindcss.com/) |
+| **Database** | MySQL / MariaDB (kompatibel juga dengan SQLite) |
+| **Bahasa Pemrograman** | PHP 8.2 / PHP 8.3 |
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 📋 Kebutuhan Sistem (System Requirements)
 
-## License
+Pastikan server atau komputer lokal Anda telah memenuhi spesifikasi berikut:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **PHP**: Versi `>= 8.2` (Disarankan PHP 8.3)
+- **Ekstensi PHP Wajib**:
+  - `pdo_mysql`
+  - `mbstring`
+  - `openssl`
+  - `fileinfo`
+  - `intl`
+  - `zip`
+  - `gd` atau `imagick`
+  - `bcmath`
+  - `curl`
+- **Database**: MySQL `>= 8.0` atau MariaDB `>= 10.4`
+- **Dependency Manager**: [Composer](https://getcomposer.org/) versi `>= 2.2`
+
+---
+
+## 🚀 Panduan Instalasi Lokal (Quick Start)
+
+Ikuti langkah-langkah berikut untuk menjalankan Kaslo di komputer lokal:
+
+### 1. Clone Repository
+```bash
+git clone https://github.com/username-anda/kaslo.git
+cd kaslo
+```
+
+### 2. Install Dependensi Composer
+```bash
+composer install
+```
+
+### 3. Konfigurasi Environment (`.env`)
+Salin file `.env.example` menjadi `.env`:
+```bash
+cp .env.example .env
+```
+Buka file `.env` dan sesuaikan konfigurasi database MySQL Anda:
+```env
+APP_NAME=Kaslo
+APP_URL=http://localhost:8000
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=kaslo
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 4. Generate Application Key
+```bash
+php artisan key:generate
+```
+
+### 5. Jalankan Migrasi Database & Seeder
+Buat database `kaslo` di MySQL Anda terlebih dahulu, kemudian jalankan:
+```bash
+php artisan migrate --seed
+```
+
+### 6. Hubungkan Storage Link (untuk Upload Bukti Struk)
+```bash
+php artisan storage:link
+```
+
+### 7. Jalankan Server Lokal
+```bash
+php artisan serve
+```
+Akses aplikasi melalui browser di: **[http://localhost:8000](http://localhost:8000)** (otomatis diarahkan ke halaman login Kaslo).
+
+---
+
+## 🔑 Akun Demo Bawaan
+
+Setelah menjalankan perintah `--seed`, Anda dapat langsung login menggunakan akun demo berikut:
+
+| Peran | Alamat Email | Password | Ruang Keuangan |
+|---|---|---|---|
+| **Suami** (Pemilik / Pengelola) | `suami@kaslo.test` | `password` | Keluarga Budi & Siti |
+| **Istri** (Anggota Bersama) | `istri@kaslo.test` | `password` | Keluarga Budi & Siti |
+
+---
+
+## 🧪 Menjalankan Pengujian Otomatis (Testing)
+
+Kaslo dilengkapi dengan Automated Feature & Unit Test untuk memverifikasi logika kalkulasi saldo, multi-tenancy, dan budgeting:
+
+```bash
+php artisan test
+```
+
+Hasil pengujian yang diharapkan:
+```text
+PASS  Tests\Unit\ExampleTest
+PASS  Tests\Feature\ExampleTest
+PASS  Tests\Feature\KasloExpenseTrackerTest
+  ✓ root redirects to admin
+  ✓ household and multi user access
+  ✓ expense decreases wallet balance
+  ✓ income increases wallet balance
+  ✓ transfer moves balance between wallets
+  ✓ budget creation
+
+Tests: 8 passed (14 assertions)
+```
+
+---
+
+## 📄 Lisensi
+
+Proyek Kaslo ini dirilis di bawah lisensi terbuka [MIT License](LICENSE).
