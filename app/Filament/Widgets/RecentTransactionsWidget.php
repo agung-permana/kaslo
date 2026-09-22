@@ -22,9 +22,10 @@ class RecentTransactionsWidget extends BaseWidget
 
         return $table
             ->query(
-                $household
-                    ? $household->transactions()->latest('transaction_date')->limit(5)
-                    : Transaction::query()->whereRaw('1 = 0')
+                Transaction::query()
+                    ->where('household_id', $household?->id ?? 0)
+                    ->latest('transaction_date')
+                    ->limit(5)
             )
             ->columns([
                 Tables\Columns\TextColumn::make('transaction_date')
