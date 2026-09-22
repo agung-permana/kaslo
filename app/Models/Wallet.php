@@ -29,6 +29,15 @@ class Wallet extends Model
         'is_active' => 'boolean',
     ];
 
+    protected static function booted(): void
+    {
+        static::creating(function (Wallet $wallet) {
+            if ($wallet->current_balance === null || (float) $wallet->current_balance === 0.0) {
+                $wallet->current_balance = $wallet->initial_balance ?? 0;
+            }
+        });
+    }
+
     public function household(): BelongsTo
     {
         return $this->belongsTo(Household::class);

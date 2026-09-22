@@ -18,8 +18,14 @@ class RecentTransactionsWidget extends BaseWidget
 
     public function table(Table $table): Table
     {
+        $household = \Filament\Facades\Filament::getTenant();
+
         return $table
-            ->query(TransactionResource::getEloquentQuery()->latest('transaction_date')->limit(5))
+            ->query(
+                $household
+                    ? $household->transactions()->latest('transaction_date')->limit(5)
+                    : Transaction::query()->whereRaw('1 = 0')
+            )
             ->columns([
                 Tables\Columns\TextColumn::make('transaction_date')
                     ->label('Tanggal')

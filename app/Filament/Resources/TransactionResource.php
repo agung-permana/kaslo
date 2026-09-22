@@ -6,6 +6,7 @@ use App\Filament\Resources\TransactionResource\Pages;
 use App\Models\Category;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -69,7 +70,7 @@ class TransactionResource extends Resource
 
                         Forms\Components\Select::make('wallet_id')
                             ->label(fn (Get $get) => $get('type') === 'transfer' ? 'Dompet Sumber (Asal)' : 'Dompet / Rekening')
-                            ->options(fn () => Wallet::where('is_active', true)->pluck('name', 'id'))
+                            ->options(fn () => Filament::getTenant()?->wallets()->where('is_active', true)->pluck('name', 'id') ?? [])
                             ->required()
                             ->searchable()
                             ->preload(),
@@ -78,9 +79,10 @@ class TransactionResource extends Resource
                             ->label('Dompet Tujuan')
                             ->options(function (Get $get) {
                                 $sourceWalletId = $get('wallet_id');
-                                return Wallet::where('is_active', true)
+                                return Filament::getTenant()?->wallets()
+                                    ->where('is_active', true)
                                     ->when($sourceWalletId, fn ($q) => $q->where('id', '!=', $sourceWalletId))
-                                    ->pluck('name', 'id');
+                                    ->pluck('name', 'id') ?? [];
                             })
                             ->visible(fn (Get $get) => $get('type') === 'transfer')
                             ->required(fn (Get $get) => $get('type') === 'transfer')
@@ -93,7 +95,7 @@ class TransactionResource extends Resource
                                 if (!in_array($type, ['expense', 'income'])) {
                                     return [];
                                 }
-                                return Category::where('type', $type)->pluck('name', 'id');
+                                return Filament::getTenant()?->categories()->where('type', $type)->pluck('name', 'id') ?? [];
                             })
                             ->visible(fn (Get $get) => in_array($get('type'), ['expense', 'income']))
                             ->required(fn (Get $get) => in_array($get('type'), ['expense', 'income']))
@@ -201,13 +203,13 @@ class TransactionResource extends Resource
                     ]),
                 Tables\Filters\SelectFilter::make('wallet_id')
                     ->label('Dompet')
-                    ->options(fn () => Wallet::pluck('name', 'id')),
+                    ->options(fn () => Filament::getTenant()?->wallets()->pluck('name', 'id') ?? []),
                 Tables\Filters\SelectFilter::make('category_id')
                     ->label('Kategori')
-                    ->options(fn () => Category::pluck('name', 'id')),
+                    ->options(fn () => Filament::getTenant()?->categories()->pluck('name', 'id') ?? []),
                 Tables\Filters\SelectFilter::make('user_id')
                     ->label('Pencatat')
-                    ->relationship('user', 'name'),
+                    ->relationship('user', 'name', fn (Builder $query) => Filament::getTenant() ? $query->whereHas('households', fn ($q) => $q->where('households.id', Filament::getTenant()->id)) : $query),
                 Tables\Filters\Filter::make('transaction_date')
                     ->form([
                         Forms\Components\DatePicker::make('from')->label('Dari Tanggal'),

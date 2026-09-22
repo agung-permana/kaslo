@@ -7,6 +7,7 @@ use App\Models\Budget;
 use App\Models\Category;
 use App\Models\Transaction;
 use Carbon\Carbon;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -33,7 +34,7 @@ class BudgetResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('category_id')
                             ->label('Kategori Pengeluaran')
-                            ->options(fn () => Category::where('type', 'expense')->pluck('name', 'id'))
+                            ->options(fn () => Filament::getTenant()?->categories()->where('type', 'expense')->pluck('name', 'id') ?? [])
                             ->required()
                             ->searchable(),
 
@@ -93,7 +94,8 @@ class BudgetResource extends Resource
                         $start = Carbon::createFromFormat('Y-m', $record->month_year)->startOfMonth();
                         $end = Carbon::createFromFormat('Y-m', $record->month_year)->endOfMonth();
 
-                        $totalSpent = Transaction::where('category_id', $record->category_id)
+                        $totalSpent = Transaction::where('household_id', $record->household_id)
+                            ->where('category_id', $record->category_id)
                             ->where('type', 'expense')
                             ->whereBetween('transaction_date', [$start, $end])
                             ->sum('amount');
@@ -104,7 +106,8 @@ class BudgetResource extends Resource
                         $start = Carbon::createFromFormat('Y-m', $record->month_year)->startOfMonth();
                         $end = Carbon::createFromFormat('Y-m', $record->month_year)->endOfMonth();
 
-                        $totalSpent = Transaction::where('category_id', $record->category_id)
+                        $totalSpent = Transaction::where('household_id', $record->household_id)
+                            ->where('category_id', $record->category_id)
                             ->where('type', 'expense')
                             ->whereBetween('transaction_date', [$start, $end])
                             ->sum('amount');
@@ -119,7 +122,8 @@ class BudgetResource extends Resource
                         $start = Carbon::createFromFormat('Y-m', $record->month_year)->startOfMonth();
                         $end = Carbon::createFromFormat('Y-m', $record->month_year)->endOfMonth();
 
-                        $totalSpent = Transaction::where('category_id', $record->category_id)
+                        $totalSpent = Transaction::where('household_id', $record->household_id)
+                            ->where('category_id', $record->category_id)
                             ->where('type', 'expense')
                             ->whereBetween('transaction_date', [$start, $end])
                             ->sum('amount');
@@ -138,7 +142,8 @@ class BudgetResource extends Resource
                         $start = Carbon::createFromFormat('Y-m', $record->month_year)->startOfMonth();
                         $end = Carbon::createFromFormat('Y-m', $record->month_year)->endOfMonth();
 
-                        $totalSpent = Transaction::where('category_id', $record->category_id)
+                        $totalSpent = Transaction::where('household_id', $record->household_id)
+                            ->where('category_id', $record->category_id)
                             ->where('type', 'expense')
                             ->whereBetween('transaction_date', [$start, $end])
                             ->sum('amount');

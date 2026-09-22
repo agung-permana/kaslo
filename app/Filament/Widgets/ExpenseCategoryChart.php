@@ -2,9 +2,8 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Category;
-use App\Models\Transaction;
 use Carbon\Carbon;
+use Filament\Facades\Filament;
 use Filament\Widgets\ChartWidget;
 
 class ExpenseCategoryChart extends ChartWidget
@@ -20,12 +19,22 @@ class ExpenseCategoryChart extends ChartWidget
 
     protected function getData(): array
     {
+        $household = Filament::getTenant();
+
+        if (! $household) {
+            return [
+                'datasets' => [],
+                'labels' => [],
+            ];
+        }
+
         $startOfMonth = Carbon::now()->startOfMonth();
         $endOfMonth = Carbon::now()->endOfMonth();
 
-        $categories = Category::where('type', 'expense')
-            ->withSum(['transactions' => function ($query) use ($startOfMonth, $endOfMonth) {
-                $query->where('type', 'expense')
+        $categories = $household->categories()->where('type', 'expense')
+            ->withSum(['transactions' => function ($query) use ($startOfMonth, $endOfMonth, $household) {
+                $query->where('household_id', $household->id)
+                    ->where('type', 'expense')
                     ->whereBetween('transaction_date', [$startOfMonth, $endOfMonth]);
             }], 'amount')
             ->get()

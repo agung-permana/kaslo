@@ -2,8 +2,8 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Transaction;
 use Carbon\Carbon;
+use Filament\Facades\Filament;
 use Filament\Widgets\ChartWidget;
 
 class CashFlowMonthlyChart extends ChartWidget
@@ -19,6 +19,15 @@ class CashFlowMonthlyChart extends ChartWidget
 
     protected function getData(): array
     {
+        $household = Filament::getTenant();
+
+        if (! $household) {
+            return [
+                'datasets' => [],
+                'labels' => [],
+            ];
+        }
+
         $months = [];
         $incomeData = [];
         $expenseData = [];
@@ -30,11 +39,11 @@ class CashFlowMonthlyChart extends ChartWidget
             $start = $month->copy()->startOfMonth();
             $end = $month->copy()->endOfMonth();
 
-            $income = Transaction::where('type', 'income')
+            $income = $household->transactions()->where('type', 'income')
                 ->whereBetween('transaction_date', [$start, $end])
                 ->sum('amount');
 
-            $expense = Transaction::where('type', 'expense')
+            $expense = $household->transactions()->where('type', 'expense')
                 ->whereBetween('transaction_date', [$start, $end])
                 ->sum('amount');
 

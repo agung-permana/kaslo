@@ -2,9 +2,8 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Transaction;
-use App\Models\Wallet;
 use Carbon\Carbon;
+use Filament\Facades\Filament;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -14,19 +13,25 @@ class StatsOverviewWidget extends BaseWidget
 
     protected function getStats(): array
     {
+        $household = Filament::getTenant();
+
+        if (! $household) {
+            return [];
+        }
+
         $startOfMonth = Carbon::now()->startOfMonth();
         $endOfMonth = Carbon::now()->endOfMonth();
 
-        // Total Saldo Semua Dompet Aktif
-        $totalBalance = Wallet::where('is_active', true)->sum('current_balance');
+        // Total Saldo Semua Dompet Aktif milik Ruang Keuangan saat ini
+        $totalBalance = $household->wallets()->where('is_active', true)->sum('current_balance');
 
-        // Pemasukan Bulan Berjalan
-        $incomeThisMonth = Transaction::where('type', 'income')
+        // Pemasukan Bulan Berjalan milik Ruang Keuangan saat ini
+        $incomeThisMonth = $household->transactions()->where('type', 'income')
             ->whereBetween('transaction_date', [$startOfMonth, $endOfMonth])
             ->sum('amount');
 
-        // Pengeluaran Bulan Berjalan
-        $expenseThisMonth = Transaction::where('type', 'expense')
+        // Pengeluaran Bulan Berjalan milik Ruang Keuangan saat ini
+        $expenseThisMonth = $household->transactions()->where('type', 'expense')
             ->whereBetween('transaction_date', [$startOfMonth, $endOfMonth])
             ->sum('amount');
 
