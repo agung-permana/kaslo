@@ -11,7 +11,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(
+            \Livewire\Mechanisms\HandleRequests\HandleRequests::class,
+            \App\Livewire\CustomHandleRequests::class
+        );
     }
 
     /**
@@ -21,4 +24,5 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
+
 }
