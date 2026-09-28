@@ -38,7 +38,8 @@ class ExpenseCategoryChart extends ChartWidget
                     ->whereBetween('transaction_date', [$startOfMonth, $endOfMonth]);
             }], 'amount')
             ->get()
-            ->filter(fn ($cat) => ($cat->transactions_sum_amount ?? 0) > 0);
+            ->filter(fn ($cat) => ($cat->transactions_sum_amount ?? 0) > 0)
+            ->values();
 
         $labels = $categories->pluck('name')->toArray();
         $data = $categories->map(fn ($cat) => (float) $cat->transactions_sum_amount)->toArray();
