@@ -15,6 +15,7 @@ class Household extends Model implements HasCurrentTenantLabel
     protected $fillable = [
         'name',
         'description',
+        'payday_date',
     ];
 
     public function users(): BelongsToMany

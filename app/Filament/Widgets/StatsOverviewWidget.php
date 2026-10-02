@@ -19,8 +19,20 @@ class StatsOverviewWidget extends BaseWidget
             return [];
         }
 
-        $startOfMonth = Carbon::now()->startOfMonth();
-        $endOfMonth = Carbon::now()->endOfMonth();
+        $payday = $household->payday_date ?? 25; // Tanggal gajian dari Settings, default 25
+        $now = Carbon::now();
+        
+        if ($now->day >= $payday) {
+            // Periode dimulai dari bulan ini tanggal 25, sampai bulan depan tanggal 24
+            $startOfMonth = $now->copy()->setDay($payday)->startOfDay();
+            $endOfMonth = $startOfMonth->copy()->addMonth()->subDay()->endOfDay();
+        } else {
+            // Periode dimulai dari bulan lalu tanggal 25, sampai bulan ini tanggal 24
+            $startOfMonth = $now->copy()->subMonth()->setDay($payday)->startOfDay();
+            $endOfMonth = $now->copy()->setDay($payday)->subDay()->endOfDay();
+        }
+
+        $periodDescription = $startOfMonth->translatedFormat('d M') . ' - ' . $endOfMonth->translatedFormat('d M Y');
 
         // Total Saldo Semua Dompet Aktif milik Ruang Keuangan saat ini
         $totalBalance = $household->wallets()->where('is_active', true)->sum('current_balance');
@@ -45,12 +57,12 @@ class StatsOverviewWidget extends BaseWidget
                 ->color('success'),
 
             Stat::make('Pemasukan Bulan Ini', 'Rp ' . number_format($incomeThisMonth, 0, ',', '.'))
-                ->description(Carbon::now()->translatedFormat('F Y'))
+                ->description($periodDescription)
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('success'),
 
             Stat::make('Pengeluaran Bulan Ini', 'Rp ' . number_format($expenseThisMonth, 0, ',', '.'))
-                ->description(Carbon::now()->translatedFormat('F Y'))
+                ->description($periodDescription)
                 ->descriptionIcon('heroicon-m-arrow-trending-down')
                 ->color('danger'),
 

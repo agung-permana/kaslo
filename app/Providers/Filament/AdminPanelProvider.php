@@ -36,6 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->font('Inter')
             ->tenant(\App\Models\Household::class)
             ->tenantRegistration(\App\Filament\Pages\Tenancy\RegisterHousehold::class)
+            ->tenantProfile(\App\Filament\Pages\Tenancy\EditHouseholdProfile::class)
             ->sidebarCollapsibleOnDesktop()
             ->spa()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
